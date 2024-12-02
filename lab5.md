@@ -1,163 +1,207 @@
 ## Họ tên: Nguyễn Văn Trường
 ## Mã sinh viên: 4451051021
-# Thiết kế hệ thống con của hệ thống tính lương
 
-# 1. Phân Phối Hành Vi Của Hệ Thống Con Đến Các Phần Tử
+# Thiết Kế Hệ Thống Con Cho Ca Sử Dụng TimeCard
 
-Trong kiến trúc hệ thống, các hệ thống con được thiết kế để đảm nhận những chức năng riêng biệt, với các phần tử cụ thể thực hiện từng nhiệm vụ chi tiết. Phân phối hành vi như sau:
-
-## a) Scheduler Subsystem
-
-- **Chức năng**:  
-  Scheduler Subsystem đảm nhận vai trò quản lý lịch trình và tự động kích hoạt các quy trình tính lương theo thời gian đã định. Hệ thống này đảm bảo rằng các quy trình quan trọng được thực thi một cách chính xác và đúng thời điểm, giảm thiểu sự phụ thuộc vào can thiệp thủ công.  
-
-- **Các thành phần**:  
-  - **SystemClock**: Thành phần này hoạt động như một công cụ theo dõi thời gian, chịu trách nhiệm kiểm tra và kích hoạt các quy trình như Run Payroll đúng lịch trình đã định.  
-  - **ProjectManagementDatabase**: Thành phần này lưu trữ danh sách các mã dự án có liên quan, cung cấp dữ liệu cần thiết cho các quy trình sử dụng thông tin dự án.  
-
----
-
-## b) Payroll Processing Subsystem
-
-- **Chức năng**:  
-  Payroll Processing Subsystem chịu trách nhiệm tính toán lương và thực hiện xử lý thanh toán. Đây là một trong những hệ thống quan trọng nhất trong kiến trúc, đảm bảo tính chính xác và bảo mật cho quy trình trả lương nhân viên.  
-
-- **Các thành phần**:  
-  - **PayrollController**: Thành phần chịu trách nhiệm xử lý toàn bộ logic nghiệp vụ liên quan đến tính toán lương, đảm bảo rằng mọi dữ liệu được tính toán đúng theo quy định.  
-  - **BankSystemProxy**: Giao diện giữa hệ thống và ngân hàng, hỗ trợ chuyển khoản lương cho nhân viên một cách an toàn.  
-  - **PrinterServiceProxy**: Công cụ hỗ trợ in phiếu lương, đảm bảo thông tin lương được hiển thị rõ ràng và đầy đủ.  
-  - **PayrollDatabase**: Lưu trữ dữ liệu lương của nhân viên, đảm bảo rằng mọi thông tin được lưu giữ lâu dài và có thể truy cập khi cần.  
-
----
-
-## c) Timecard Subsystem
-
-- **Chức năng**:  
-  Timecard Subsystem được thiết kế để theo dõi giờ làm việc của nhân viên và quản lý trạng thái thẻ chấm công. Hệ thống này đảm bảo rằng mọi thông tin liên quan đến giờ làm việc được cập nhật kịp thời và chính xác.  
-
-- **Các thành phần**:  
-  - **TimecardController**: Thành phần xử lý các nghiệp vụ liên quan đến việc quản lý thẻ chấm công, từ việc cập nhật giờ làm việc đến trạng thái sử dụng của thẻ.  
-  - **TimecardForm**: Giao diện nhập liệu, cho phép người dùng nhập thông tin giờ làm việc và trạng thái thẻ một cách dễ dàng và trực quan.  
-
----
-
-## d) Employee Management Subsystem
-
-- **Chức năng**:  
-  Employee Management Subsystem chịu trách nhiệm quản lý thông tin chi tiết về nhân viên và trạng thái làm việc của họ. Hệ thống này là nguồn cung cấp dữ liệu quan trọng cho các hệ thống con khác như Payroll Processing và Timecard Subsystem.  
-
-- **Các thành phần**:  
-  - **Employee**: Thực thể đại diện cho thông tin nhân viên, bao gồm các thuộc tính như họ tên, mã nhân viên, và trạng thái làm việc.  
-  - **EmployeeDatabase**: Cơ sở dữ liệu lưu trữ thông tin chi tiết của nhân viên, từ dữ liệu cá nhân đến lịch sử làm việc.  
-
----
-
-# 2. Phân Phối Hành Vi Của Hệ Thống Con Đến Các Phần Tử
-
-## Scheduler Subsystem
-
-- Hệ thống đảm bảo tự động kích hoạt quy trình tính lương theo lịch trình đã được định trước.  
-- Quản lý và điều khiển việc thực thi các tác vụ quan trọng trong Payroll Processing Subsystem, đảm bảo quy trình tính lương luôn diễn ra đúng thời điểm mà không cần sự can thiệp thủ công.  
-
----
-
-## Payroll Processing Subsystem
-
-- Tính toán lương cho từng nhân viên dựa trên thông tin về giờ làm việc và trạng thái của nhân viên được cung cấp bởi các hệ thống liên quan.  
-- Thực hiện thanh toán qua ngân hàng một cách an toàn, đồng thời cung cấp hỗ trợ in phiếu lương khi cần.  
-- Lưu trữ dữ liệu lương nhân viên vào PayrollDatabase, đảm bảo thông tin được quản lý lâu dài và sẵn sàng để truy xuất khi cần thiết.  
-
----
-
-## Timecard Subsystem
-
-- Chịu trách nhiệm theo dõi và quản lý thông tin về giờ làm việc của nhân viên, bao gồm cả trạng thái của thẻ chấm công.  
-- Sử dụng dữ liệu từ ProjectManagementDatabase để liên kết giờ làm việc với các dự án cụ thể, đảm bảo thông tin chính xác và dễ dàng đối chiếu.  
-- Thường xuyên cập nhật trạng thái của thẻ chấm công trong hệ thống, đảm bảo mọi thông tin đều phản ánh chính xác thời điểm thực tế.  
-
----
-
-## Employee Management Subsystem
-
-- Hệ thống lưu trữ và quản lý toàn bộ thông tin chi tiết về nhân viên, từ dữ liệu cá nhân đến trạng thái làm việc hiện tại.  
-- Cho phép thay đổi trạng thái nhân viên như đang làm việc, nghỉ việc hoặc bị xóa, đảm bảo hệ thống luôn phản ánh đúng tình trạng nhân sự.  
-- Cung cấp dữ liệu liên quan đến nhân viên cho các hệ thống con khác, đảm bảo mọi hệ thống có thể hoạt động hiệu quả dựa trên thông tin cập nhật và đồng nhất.  
-
-
-
-# 3. Mô Tả Các Phụ Thuộc Của Hệ Thống Con
-
-### Mối Quan Hệ Giữa Các Hệ Thống Con
-
-Mối quan hệ giữa các hệ thống con trong kiến trúc được thiết kế rõ ràng và có tổ chức nhằm đảm bảo tính dễ hiểu và khả năng mở rộng trong tương lai. Chi tiết về các phụ thuộc giữa các hệ thống con như sau:
-
-- **Timecard Subsystem**  
-  Hệ thống này chịu trách nhiệm ghi nhận và lưu trữ thông tin giờ làm việc của nhân viên. Để thực hiện chức năng của mình, **Timecard Subsystem** cần truy xuất dữ liệu từ **Employee Management Subsystem**, nơi lưu trữ thông tin chi tiết về nhân viên. Sự phụ thuộc này đảm bảo rằng mọi dữ liệu liên quan đến nhân viên được đồng bộ và chính xác.
-
-- **Payroll Processing Subsystem**  
-  Đây là hệ thống phụ trách xử lý bảng lương cho nhân viên. Để hoàn thành quy trình tính lương, hệ thống này cần thu thập dữ liệu từ hai nguồn:  
-  - **Employee Management Subsystem**: Dữ liệu từ hệ thống này cung cấp danh sách nhân viên cùng các thông tin cần thiết như mức lương cơ bản, hợp đồng, và các yếu tố liên quan.  
-  - **Timecard Subsystem**: Thông tin về giờ làm việc từ hệ thống này được sử dụng để tính toán chính xác lương theo số giờ làm việc hoặc theo các chính sách đã định.
-
-- **Scheduler Subsystem**  
-  Hệ thống này được thiết kế độc lập, không có bất kỳ phụ thuộc trực tiếp nào vào các hệ thống con khác. Tuy nhiên, **Scheduler Subsystem** đóng vai trò quan trọng trong việc tự động kích hoạt **Payroll Processing Subsystem** theo lịch trình đã được định trước. Điều này giúp đảm bảo rằng bảng lương được xử lý kịp thời và chính xác mà không cần sự can thiệp thủ công.
-
-Các mối quan hệ trên được thiết kế nhằm tối ưu hóa luồng dữ liệu giữa các hệ thống, đồng thời giữ cho kiến trúc tổng thể dễ bảo trì và nâng cấp.
-
-# 4. Kiểm Tra (Checkpoints)
-
-- **Phân chia hợp lý**: Các hệ thống con trong toàn bộ kiến trúc được thiết kế với trách nhiệm rõ ràng và cụ thể. Mỗi hệ thống con đảm nhận một vai trò nhất định, giúp tăng cường khả năng quản lý và giảm sự chồng chéo trong quá trình vận hành. Các thành phần trong từng hệ thống con cũng được phân bổ hợp lý để đảm bảo tính nhất quán và hiệu quả.
-- 
-- **Phụ thuộc rõ ràng**: Mối quan hệ giữa các hệ thống con được mô tả một cách minh bạch thông qua sơ đồ kiến trúc và định nghĩa rõ các phụ thuộc. Điều này giúp việc theo dõi và bảo trì dễ dàng hơn, đồng thời tránh những vấn đề phát sinh do phụ thuộc không rõ ràng hoặc không được kiểm soát.
-- 
-- **Tính mở rộng**: Hệ thống được thiết kế với khả năng mở rộng linh hoạt, cho phép các hệ thống con thay đổi hoặc nâng cấp độc lập mà không ảnh hưởng đến hoạt động chung. Điều này đảm bảo rằng hệ thống luôn có khả năng thích nghi với các yêu cầu mới, đồng thời tối ưu hóa tài nguyên và thời gian phát triển.
-
-
-  # Thiết Kế Hệ Thống Con Cho Ca Sử Dụng TimeCard
-
-# 1. Phân Phối Hành Vi Của Hệ Thống Con Đến Các Phần Tử
+## 1. Phân Phối Hành Vi Của Hệ Thống Con Đến Các Phần Tử
 
 ### Thành Phần Hệ Thống Con
-- **TimecardForm**: Giao diện người dùng để nhập và hiển thị thông tin thời gian làm việc.  
-- **TimecardController**: Điều khiển logic và xử lý các yêu cầu từ TimecardForm.  
-- **ProjectManagementDatabase**: Cơ sở dữ liệu để lưu trữ thông tin thời gian làm việc.  
-- **Timecard**: Đối tượng đại diện cho các thông tin thời gian làm việc, bao gồm ngày và số giờ làm.  
+
+#### a) **TimecardForm**
+- **Chức năng**:  
+  Giao diện người dùng cho phép nhập và hiển thị thông tin thời gian làm việc của nhân viên.
+
+- **Phương thức**:  
+  - **displayTimecard()**: Hiển thị thông tin thời gian làm việc hiện tại.  
+  - **saveTimecard()**: Lưu thông tin giờ làm việc từ nhân viên vào hệ thống.  
 
 ---
 
-# 2. Tài Liệu Hóa Các Phần Tử Của Hệ Thống Con
+#### b) **TimecardController**
+- **Chức năng**:  
+  Điều khiển và xử lý các yêu cầu từ **TimecardForm**, thực hiện các nghiệp vụ liên quan đến việc quản lý thời gian làm việc.
+
+- **Phương thức**:  
+  - **getChargeCodes()**: Lấy mã chi phí cho các yêu cầu nhập giờ làm việc.  
+  - **getCurrentTimecard()**: Trả về thông tin về thời gian làm việc hiện tại của nhân viên.  
+  - **updateTimecard()**: Cập nhật thông tin giờ làm việc trong hệ thống.  
+
+---
+
+#### c) **ProjectManagementDatabase**
+- **Chức năng**:  
+  Lưu trữ thông tin về thời gian làm việc của nhân viên, liên kết với các mã dự án tương ứng.
+
+- **Phương thức**:  
+  - **saveTimecard()**: Lưu thông tin thời gian làm việc vào cơ sở dữ liệu.  
+
+---
+
+#### d) **Timecard**
+- **Chức năng**:  
+  Đối tượng đại diện cho thông tin về thời gian làm việc của nhân viên.
+
+- **Thuộc tính**:  
+  - **date**: Ngày làm việc.  
+  - **hours**: Số giờ làm việc trong ngày.  
+
+---
+
+## 2. Tài Liệu Hóa Các Phần Tử Của Hệ Thống Con
 
 ### Các Thành Phần Và Phương Thức
 
-#### TimecardForm
-- **displayTimecard()**: Hiển thị thông tin thời gian làm việc hiện tại.  
-- **saveTimecard()**: Lưu thông tin giờ làm việc từ nhân viên.  
+#### a) **TimecardForm**
+- **Chức năng**:  
+  Cung cấp giao diện người dùng để nhập và hiển thị thông tin về giờ làm việc.
 
-#### TimecardController
-- **getChargeCodes()**: Lấy mã chi phí để nhập số giờ.  
-- **getCurrentTimecard()**: Trả về thông tin thời gian làm việc hiện tại.  
-- **updateTimecard()**: Cập nhật thông tin giờ làm việc.  
+- **Phương thức**:
+  - **displayTimecard()**:  
+    Mô tả: Hiển thị thông tin giờ làm việc hiện tại.  
+    Tham số: Không có.  
+    Trả về: Không có, chỉ hiển thị dữ liệu trên giao diện.
 
-#### ProjectManagementDatabase
-- **saveTimecard()**: Lưu thông tin thời gian vào cơ sở dữ liệu.  
-
-#### Timecard
-- Chứa các thuộc tính:  
-  - **date**: Ngày làm việc.  
-  - **hours**: Số giờ làm việc.  
+  - **saveTimecard()**:  
+    Mô tả: Lưu thông tin giờ làm việc từ người dùng vào hệ thống.  
+    Tham số: Thông tin giờ làm việc (ngày và số giờ làm).  
+    Trả về: Xác nhận việc lưu dữ liệu thành công hoặc thất bại.
 
 ---
 
-# 3. Mô Tả Các Phụ Thuộc Của Hệ Thống Con
+#### b) **TimecardController**
+- **Chức năng**:  
+  Điều khiển và xử lý logic nghiệp vụ cho hệ thống thời gian làm việc, bao gồm việc cập nhật và lấy thông tin giờ làm.
 
-### Mối Quan Hệ Giữa Các Thành Phần
-- **Nhân viên (Employee)**: Là tác nhân tương tác với hệ thống, sử dụng TimecardForm để nhập thông tin về thời gian làm việc.  
-- **TimecardForm**: Gọi đến **TimecardController** để thực hiện logic và lưu dữ liệu.  
-- **TimecardController**: Tương tác với **ProjectManagementDatabase** để lưu trữ thông tin thời gian làm việc.  
+- **Phương thức**:
+  - **getChargeCodes()**:  
+    Mô tả: Lấy mã chi phí liên quan để nhập số giờ làm việc.  
+    Tham số: Không có.  
+    Trả về: Mảng mã chi phí (charge codes).
+
+  - **getCurrentTimecard()**:  
+    Mô tả: Trả về thông tin về thời gian làm việc của nhân viên trong ngày hiện tại.  
+    Tham số: Không có.  
+    Trả về: Đối tượng **Timecard** chứa thông tin về ngày và số giờ làm việc.
+
+  - **updateTimecard()**:  
+    Mô tả: Cập nhật thông tin giờ làm việc của nhân viên.  
+    Tham số: Đối tượng **Timecard** mới với thông tin cập nhật.  
+    Trả về: Xác nhận việc cập nhật thành công hoặc thất bại.
 
 ---
 
-# 4. Kiểm Tra (Checkpoints)
+#### c) **ProjectManagementDatabase**
+- **Chức năng**:  
+  Cung cấp chức năng lưu trữ và truy xuất thông tin thời gian làm việc của nhân viên.
+
+- **Phương thức**:
+  - **saveTimecard()**:  
+    Mô tả: Lưu thông tin giờ làm việc vào cơ sở dữ liệu.  
+    Tham số: Đối tượng **Timecard** chứa dữ liệu giờ làm việc.  
+    Trả về: Xác nhận việc lưu trữ thành công hoặc thất bại.
+
+---
+
+#### d) **Timecard**
+- **Chức năng**:  
+  Đối tượng đại diện cho thông tin về giờ làm việc của nhân viên.
+
+- **Thuộc tính**:
+  - **date**:  
+    Mô tả: Ngày làm việc của nhân viên.  
+    Kiểu dữ liệu: **Date**.
+  
+  - **hours**:  
+    Mô tả: Số giờ làm việc của nhân viên trong ngày.  
+    Kiểu dữ liệu: **Integer**.
+
+- **Phương thức**:
+  - **getDate()**:  
+    Mô tả: Lấy ngày làm việc của nhân viên.  
+    Tham số: Không có.  
+    Trả về: **Date**.
+
+  - **getHours()**:  
+    Mô tả: Lấy số giờ làm việc của nhân viên.  
+    Tham số: Không có.  
+    Trả về: **Integer**.
+
+  - **setDate(date)**:  
+    Mô tả: Cập nhật ngày làm việc cho nhân viên.  
+    Tham số: **Date** mới.  
+    Trả về: Không có.
+
+  - **setHours(hours)**:  
+    Mô tả: Cập nhật số giờ làm việc cho nhân viên.  
+    Tham số: **Integer** mới.  
+    Trả về: Không có.
+
+
+---
+
+## 3. Mô Tả Các Phụ Thuộc Của Hệ Thống Con
+
+## 3. Mô Tả Các Phụ Thuộc Của Hệ Thống Con
+
+### Mối Quan Hệ Giữa Các Thành Phần Trong Hệ Thống Con TimeCard
+
+#### a) **Nhân viên (Employee)**
+- **Vai trò**:  
+  Nhân viên là tác nhân tương tác với hệ thống. Họ nhập thông tin thời gian làm việc thông qua **TimecardForm**.
+- **Phụ thuộc**:  
+  Cần cung cấp thông tin cá nhân và thông tin mã dự án từ hệ thống quản lý nhân sự và dự án để nhập liệu chính xác.
+
+---
+
+#### b) **TimecardForm**
+- **Vai trò**:  
+  Là giao diện người dùng, giúp nhân viên nhập liệu và hiển thị thông tin thời gian làm việc.
+- **Phụ thuộc**:  
+  - Phụ thuộc vào **TimecardController** để xử lý logic và cập nhật dữ liệu.
+  - Dữ liệu nhập từ người dùng được gửi đến **ProjectManagementDatabase** thông qua **TimecardController**.
+
+---
+
+#### c) **TimecardController**
+- **Vai trò**:  
+  Điều khiển nghiệp vụ, xử lý logic giữa giao diện và cơ sở dữ liệu. 
+- **Phụ thuộc**:  
+  - Nhận dữ liệu từ **TimecardForm** để xử lý các yêu cầu.
+  - Gửi và nhận thông tin từ **ProjectManagementDatabase** để lưu trữ hoặc truy vấn dữ liệu thời gian làm việc.
+  - Dựa vào mã chi phí (charge codes) từ **ProjectManagementDatabase** để xác định dự án mà giờ làm việc được ghi nhận.
+
+---
+
+#### d) **ProjectManagementDatabase**
+- **Vai trò**:  
+  Lưu trữ thông tin liên quan đến thời gian làm việc của nhân viên và các mã dự án liên quan.
+- **Phụ thuộc**:  
+  - Phụ thuộc vào **TimecardController** để nhận dữ liệu cần lưu trữ.
+  - Cung cấp mã chi phí (charge codes) và thông tin dự án khi được yêu cầu.
+
+---
+
+#### e) **Timecard**
+- **Vai trò**:  
+  Là đối tượng đại diện cho thông tin thời gian làm việc của nhân viên.
+- **Phụ thuộc**:  
+  - Được tạo ra hoặc cập nhật bởi **TimecardController** khi dữ liệu mới được nhập.
+  - Được lưu trữ vào **ProjectManagementDatabase** để đảm bảo tính toàn vẹn dữ liệu.
+
+---
+
+### Tổng Quan Các Phụ Thuộc
+- **Nhân viên** ➡ **TimecardForm**: Nhập liệu.
+- **TimecardForm** ➡ **TimecardController**: Xử lý logic nhập liệu.
+- **TimecardController** ➡ **ProjectManagementDatabase**: Lưu trữ dữ liệu thời gian làm việc.
+- **TimecardController** ↔ **ProjectManagementDatabase**: Truy xuất mã chi phí (charge codes).
+- **ProjectManagementDatabase** ➡ **Timecard**: Lưu trữ thông tin giờ làm việc.
+
+Mối quan hệ trên giúp đảm bảo hệ thống con TimeCard hoạt động nhất quán, từ việc nhập dữ liệu đến lưu trữ và truy xuất thông tin.
+
+---
+
+## 4. Kiểm Tra (Checkpoints)
 
 ### Quy Trình Kiểm Tra Và Đánh Giá
 
