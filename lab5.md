@@ -141,8 +141,6 @@
 
 ## 3. Mô Tả Các Phụ Thuộc Của Hệ Thống Con
 
-## 3. Mô Tả Các Phụ Thuộc Của Hệ Thống Con
-
 ### Mối Quan Hệ Giữa Các Thành Phần Trong Hệ Thống Con TimeCard
 
 #### a) **Nhân viên (Employee)**
